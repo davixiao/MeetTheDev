@@ -40,7 +40,7 @@ router.post(
 
     try {
       // check if registered user already exists. Mongoose provides findOne, that
-      // is a promise that returns boolean whether they found one.
+      // is a promise that returns a user object or null.
       let user = await User.findOne({ email }); // email: email
 
       if (user) {
