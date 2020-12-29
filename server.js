@@ -6,6 +6,11 @@ const app = express();
 // Connect Database
 connectDB();
 
+// Init Middleware
+// when we want to access req.body, it turns out that the body is
+// in json. We cannot read it... So, we need middleware to read it for us.
+app.use(express.json({ extended: false }));
+
 app.get('/', (req, res) => {
   res.send('API Running');
 });
