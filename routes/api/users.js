@@ -71,6 +71,12 @@ router.post(
 
       await user.save();
 
+      // JWT allows us to authenticate a user. So, we know it is actually them.
+      // So, once the user is logged in, they get a token that we, the server sign
+      // with a secret key. With that token,
+      // whenever they make a request with that token, we already know it is them,
+      // and no need for their password/email again. We still have to check the
+      // token that it is them, though.
       const payload = {
         user: {
           id: user.id, // after saving, mongodb provides an _id, which mongoose simplifies to id
