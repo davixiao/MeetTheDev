@@ -44,7 +44,9 @@ router.post(
       if (user) {
         // we put it in an array since we want to stay consistent. We put errors
         // in an array before, so just do it here too.
-        res.status(400).json({ errors: [{ msg: 'User already exists' }] });
+        return res
+          .status(400)
+          .json({ errors: [{ msg: 'User already exists' }] });
       }
 
       // create an avatar for them
