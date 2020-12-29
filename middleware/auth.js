@@ -1,3 +1,4 @@
+// verifies a token
 const jwt = require('jsonwebtoken');
 const config = require('config');
 
