@@ -317,6 +317,11 @@ router.delete('/education/:edu_id', auth, async (req, res) => {
 // @access   Public
 router.get('/github/:username', async (req, res) => {
   try {
+    // URI is a way to identify something and URL is a way to locate something.
+    // thus all URLs are URIs.
+    // URI can identify documents in a short string numbers, letters, and symbols. SO, it is more general.
+    // there is also URN, which is also a subset of URI. URN names the text. It identifies it by name
+    // and not location. So, a book's isbn is a urn. Or uuid.
     const uri = encodeURI(
       `https://api.github.com/users/${req.params.username}/repos?per_page=5&sort=created:asc`
     );
