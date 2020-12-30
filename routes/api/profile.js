@@ -229,11 +229,9 @@ router.delete('/experience/:exp_id', auth, async (req, res) => {
 
     // note that when we add an experience in the mongodb database,
     // mongodb gives each experience in the array its own id.
-    const removeIndex = profile.experience
-      .map((item) => item.id) // returns an array of experience ids
-      .indexOf(req.params.exp_id); // find the index of the experience we want to delete
-
-    profile.experience.splice(removeIndex, 1); // at removeIndex, remove 1 element
+    profile.experience = profile.experience.filter(
+      (exp) => exp._id.toString() !== req.params.exp_id
+    );
     await profile.save();
 
     res.json(profile);
