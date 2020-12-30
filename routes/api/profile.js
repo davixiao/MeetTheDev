@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const auth = require('../../middleware/auth');
+const { check, validationResult } = require('express-validator');
 
 const User = require('../../models/User');
 const Profile = require('../../models/Profile');
@@ -34,5 +35,79 @@ router.get('/me', auth, async (req, res) => {
     res.status(500).send('Server Error');
   }
 });
+
+// @route POST api/profile
+// @desc  Create or Update user profile
+// @access private
+router.post(
+  '/',
+  [
+    auth,
+    check('status', 'Status is required').not().isEmpty(),
+    check('skills', 'Skills is required').not().isEmpty(),
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    // Build profile object
+    const profileFields = {};
+    profileFields.user = req.user.id;
+
+    const fields = [
+      'company',
+      'website',
+      'location',
+      'bio',
+      'status',
+      'githubusername',
+      'skills',
+    ];
+
+    fields.forEach((e) => {
+      if (req.body[e]) {
+        profileFields[e] = req.body[e];
+        if (e === 'skills') {
+          const skills = req.body.skills;
+          profileFields.skills = skills
+            .split(', ')
+            .map((skill) => skill.trim());
+        }
+      }
+    });
+    profileFields.social = {};
+    const socials = ['youtube', 'twitter', 'facebook', 'linkedin', 'instagram'];
+    socials.forEach((e) => {
+      if (req.body[e]) {
+        profileFields.social[e] = req.body[e];
+      }
+    });
+
+    try {
+      let profile = await Profile.findOne({ user: req.user.id });
+
+      // if there is a profile, update it.
+      if (profile) {
+        profile = await Profile.findOneAndUpdate(
+          { user: req.user.id },
+          { $set: profileFields },
+          { new: true }
+        );
+
+        return res.json(profile);
+      }
+
+      // create a profile
+      profile = new Profile(profileFields);
+      await profile.save();
+      res.json(profile);
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server Error');
+    }
+  }
+);
 
 module.exports = router;
