@@ -11,7 +11,13 @@ const App = () => (
   <Router>
     <Navbar />
     {/* path is URI path. So, localhost:5000/register, etc */}
-    {/* switch is op. Without it, we would only be making a single page web page*/}
+    {/* 
+    switch is op. Without it, we would only be making a single page web page.
+    YOOO THIS IS ACTUALLY EPIC. It's kind of like an If statement mixed with URI stuff.
+
+    navbar stays the entire time. Using switch (like a switch statement), if it is /register,
+    then add this route to the html. WOW
+    */}
     <Route exact path='/' component={Landing} />
     <section className='container'>
       <Switch>
