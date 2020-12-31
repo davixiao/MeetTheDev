@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { setAlert } from '../../actions/alert';
+import PropTypes from 'prop-types';
 
-export const Register = () => {
+// instead of props.setAlert
+const Register = ({ setAlert }) => {
   // formData is where we store the state.
   // SetFormData is a function that takes in values and changes formData to those values
   // inside the useState, we have an initial value of what is in the state.
@@ -22,7 +26,7 @@ export const Register = () => {
     e.preventDefault(); // stops the thing from doing what it does default. In this case, prevents it from
     // submitting the form
     if (password !== password2) {
-      console.log('Passwords do not match');
+      setAlert('Passwords do not match', 'danger');
     } else {
       console.log('success');
       /*
@@ -110,3 +114,12 @@ export const Register = () => {
     </>
   );
 };
+
+Register.propTypes = {
+  setAlert: PropTypes.func.isRequired,
+};
+
+// connects react and redux. first parameter puts the state into props. The second parameter puts
+// a list of action creators into props.
+// if you look above, connect allows us to access props.setAlert
+export default connect(null, { setAlert })(Register);
