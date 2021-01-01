@@ -64,6 +64,7 @@ export const register = ({ name, email, password }) => async (dispatch) => {
 
 // Login User
 // for simplicity, takes in email and password, no object
+// by passing in dispatch, we can use dispatch in the return function.
 export const login = (email, password) => async (dispatch) => {
   const config = {
     headers: {
@@ -76,6 +77,7 @@ export const login = (email, password) => async (dispatch) => {
     // server response
     // expect to receive token in res
     const res = await axios.post('/api/auth', body, config);
+    // dispatch lets us send an action to the reducer
     dispatch({
       type: LOGIN_SUCCESS,
       payload: res.data,

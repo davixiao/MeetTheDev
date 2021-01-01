@@ -13,7 +13,7 @@ const Dashboard = ({
   // common practice to put any side effects in useEffect hook.
   useEffect(() => {
     getCurrentProfile();
-  }, []);
+  }, [getCurrentProfile]);
   return loading && profile === null ? (
     <Spinner />
   ) : (
