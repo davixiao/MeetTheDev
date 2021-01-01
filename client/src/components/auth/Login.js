@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { login } from '../../actions/auth';
 
-export const Login = () => {
+const Login = ({ login, isAuthenticated }) => {
   // formData is where we store the state.
   // SetFormData is a function that takes in values and changes formData to those values
   // inside the useState, we have an initial value of what is in the state.
@@ -19,8 +21,13 @@ export const Login = () => {
   const onSubmit = async (e) => {
     e.preventDefault(); // stops the thing from doing what it does default. In this case, prevents it from
     // submitting the form
-    console.log('SUCCESS');
+    login(email, password);
   };
+
+  // redirect if logged in
+  if (isAuthenticated) {
+    return <Redirect to='/dashboard' />;
+  }
   return (
     <>
       <h1 className='large text-primary'>Sign In</h1>
@@ -57,3 +64,14 @@ export const Login = () => {
     </>
   );
 };
+
+Login.propTypes = {
+  login: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool,
+};
+
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.auth.isAuthenticated,
+});
+
+export default connect(mapStateToProps, { login })(Login);

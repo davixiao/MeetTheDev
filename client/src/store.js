@@ -4,6 +4,7 @@ import thunk from 'redux-thunk';
 import rootReducer from './reducers'; // actually /reducers/index.js, but it knows it is index js.
 import setAuthToken from './utils/setAuthToken';
 
+// store contains all the states? so store.getState().auth and store.getState().alert?
 const initialState = {};
 
 const store = createStore(
@@ -13,6 +14,7 @@ const store = createStore(
 ); // note composeWithDevTools can be replaced with just redux's compose function.
 // However, it is good practice to use the devtools.
 
+// store.subscribe runs every time an action is dispatched (I think useEffect does not handle this?)
 let currentState = store.getState();
 
 store.subscribe(() => {

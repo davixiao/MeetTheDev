@@ -3,6 +3,8 @@ import {
   REGISTER_FAIL,
   USER_LOADED,
   AUTH_ERROR,
+  LOGIN_SUCCESS,
+  LOGIN_FAIL,
 } from '../actions/types';
 
 const initialState = {
@@ -12,7 +14,7 @@ const initialState = {
   user: null, // backend returns user with name, avatar, etc. This contains main data
 };
 
-export default function (state = initialState, { type, payload }) {
+const authReducer = (state = initialState, { type, payload }) => {
   switch (type) {
     case USER_LOADED:
       return {
@@ -22,6 +24,7 @@ export default function (state = initialState, { type, payload }) {
         user: payload, // contains name, email, avatar, etc.
       };
     case REGISTER_SUCCESS:
+    case LOGIN_SUCCESS:
       //localStorage.setItem('token', payload.token);
       return {
         ...state,
@@ -31,6 +34,7 @@ export default function (state = initialState, { type, payload }) {
       };
     case AUTH_ERROR:
     case REGISTER_FAIL:
+    case LOGIN_FAIL:
       //localStorage.removeItem('token');
       return {
         ...state,
@@ -41,4 +45,6 @@ export default function (state = initialState, { type, payload }) {
     default:
       return state;
   }
-}
+};
+
+export default authReducer;

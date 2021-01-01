@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { setAlert } from '../../actions/alert';
 import { register } from '../../actions/auth';
 import PropTypes from 'prop-types';
 
 // instead of props.setAlert
-const Register = ({ setAlert, register }) => {
+const Register = ({ setAlert, register, isAuthenticated }) => {
   // formData is where we store the state.
   // SetFormData is a function that takes in values and changes formData to those values
   // inside the useState, we have an initial value of what is in the state.
@@ -30,30 +29,13 @@ const Register = ({ setAlert, register }) => {
       setAlert('Passwords do not match', 'danger');
     } else {
       register({ name, email, password });
-      /*
-      without redux, we can do this:
-      const newUser = {
-        name,
-        email,
-        password,
-      };
-      try {
-        const config = {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        };
-
-        const body = JSON.stringify(newUser); // payload/body
-
-        const res = await axios.post('/api/users', body, config); // we have proxy, so no need for localhost:5000 instead of 3000.
-        console.log(res.data);
-      } catch (err) {
-        console.log(err.response.data);
-      }
-      */
     }
   };
+
+  // redirect if logged in
+  if (isAuthenticated) {
+    return <Redirect to='/dashboard' />;
+  }
   return (
     <>
       <h1 className='large text-primary'>Sign Up</h1>
@@ -113,9 +95,14 @@ const Register = ({ setAlert, register }) => {
 Register.propTypes = {
   setAlert: PropTypes.func.isRequired,
   register: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool,
 };
+
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.auth.isAuthenticated,
+});
 
 // connects react and redux. first parameter puts the state into props. The second parameter puts
 // a list of action creators into props.
 // if you look above, connect allows us to access props.setAlert
-export default connect(null, { setAlert, register })(Register);
+export default connect(mapStateToProps, { setAlert, register })(Register);
