@@ -3,10 +3,11 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { setAlert } from '../../actions/alert';
+import { register } from '../../actions/auth';
 import PropTypes from 'prop-types';
 
 // instead of props.setAlert
-const Register = ({ setAlert }) => {
+const Register = ({ setAlert, register }) => {
   // formData is where we store the state.
   // SetFormData is a function that takes in values and changes formData to those values
   // inside the useState, we have an initial value of what is in the state.
@@ -28,7 +29,7 @@ const Register = ({ setAlert }) => {
     if (password !== password2) {
       setAlert('Passwords do not match', 'danger');
     } else {
-      console.log('success');
+      register({ name, email, password });
       /*
       without redux, we can do this:
       const newUser = {
@@ -67,7 +68,6 @@ const Register = ({ setAlert }) => {
             name='name'
             value={name}
             onChange={onChange}
-            required
           />
         </div>
         <div className='form-group'>
@@ -77,7 +77,6 @@ const Register = ({ setAlert }) => {
             name='email'
             value={email}
             onChange={onChange}
-            required
           />
           <small className='form-text'>
             This site uses Gravatar so if you want a profile image, use a
@@ -89,10 +88,8 @@ const Register = ({ setAlert }) => {
             type='password'
             placeholder='Password'
             name='password'
-            minLength='6'
             value={password}
             onChange={onChange}
-            required
           />
         </div>
         <div className='form-group'>
@@ -100,10 +97,8 @@ const Register = ({ setAlert }) => {
             type='password'
             placeholder='Confirm Password'
             name='password2'
-            minLength='6'
             value={password2}
             onChange={onChange}
-            required
           />
         </div>
         <input type='submit' className='btn btn-primary' value='Register' />
@@ -117,9 +112,10 @@ const Register = ({ setAlert }) => {
 
 Register.propTypes = {
   setAlert: PropTypes.func.isRequired,
+  register: PropTypes.func.isRequired,
 };
 
 // connects react and redux. first parameter puts the state into props. The second parameter puts
 // a list of action creators into props.
 // if you look above, connect allows us to access props.setAlert
-export default connect(null, { setAlert })(Register);
+export default connect(null, { setAlert, register })(Register);
