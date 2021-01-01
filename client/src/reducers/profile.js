@@ -1,4 +1,4 @@
-import { GET_PROFILE, PROFILE_ERROR } from '../actions/types';
+import { GET_PROFILE, PROFILE_ERROR, CLEAR_PROFILE } from '../actions/types';
 
 const initialState = {
   profile: null, // when we visit a profile page, retrieve it from data base and store in this key
@@ -20,6 +20,13 @@ const profileReducer = (state = initialState, { type, paylaod }) => {
       return {
         ...state,
         error: paylaod,
+        loading: false,
+      };
+    case CLEAR_PROFILE:
+      return {
+        ...state,
+        profile: null,
+        repos: [],
         loading: false,
       };
     default:
