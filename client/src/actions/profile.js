@@ -242,7 +242,8 @@ export const deleteAccount = () => async (dispatch) => {
     )
   ) {
     try {
-      const res = await axios.delete('/api/profile/');
+      // no need to save it in variable. We are just deleting
+      await axios.delete('/api/profile/');
       dispatch({
         type: CLEAR_PROFILE,
       });
