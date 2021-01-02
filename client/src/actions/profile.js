@@ -7,6 +7,8 @@ import {
   UPDATE_PROFILE,
   ACCOUNT_DELETED,
   CLEAR_PROFILE,
+  GET_PROFILES,
+  GET_REPOS,
 } from './types';
 
 // get current users profiles
@@ -16,6 +18,62 @@ export const getCurrentProfile = () => async (dispatch) => {
     const res = await axios.get('api/profile/me');
     dispatch({
       type: GET_PROFILE,
+      payload: res.data,
+    });
+  } catch (err) {
+    dispatch({
+      type: PROFILE_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status },
+    });
+  }
+};
+
+// get all profiles
+export const getProfiles = () => async (dispatch) => {
+  // when we get all profiles, clear the single profile from the state
+  // why do we do this? It stops their profile from flashing while going to all profiles.
+  // To be fair, not much point in adding this below line
+  dispatch({ type: CLEAR_PROFILE });
+  try {
+    // backend will return an array of profiles
+    const res = await axios.get('api/profile');
+    dispatch({
+      type: GET_PROFILES,
+      payload: res.data,
+    });
+  } catch (err) {
+    dispatch({
+      type: PROFILE_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status },
+    });
+  }
+};
+
+// get profile by ID
+export const getProfileById = (userId) => async (dispatch) => {
+  // we're going to use userId instead of profileId
+  try {
+    const res = await axios.get(`api/profile/user/${userId}`);
+    dispatch({
+      type: GET_PROFILE,
+      payload: res.data,
+    });
+  } catch (err) {
+    dispatch({
+      type: PROFILE_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status },
+    });
+  }
+};
+
+// get github repos
+// takes in GITHUB username. (user adds username from profile)
+export const getGithubRepos = (username) => async (dispatch) => {
+  try {
+    // backend will return an array of profiles
+    const res = await axios.get(`api/profile/github/${username}`);
+    dispatch({
+      type: GET_PROFILES,
       payload: res.data,
     });
   } catch (err) {
@@ -43,7 +101,21 @@ export const createProfile = (formData, history, edit = false) => async (
       type: GET_PROFILE,
       payload: res.data,
     });
-
+    // Why do we have to dispatch setAlert?
+    /*
+    note, in react components, we can call setAlert directly (action maker)
+    e.g. look at Register.js. We added it to our props.
+    */
+    /*
+    remember, setAlert has no connection to redux at all. So, how do we give it
+    access to dispatch? 
+    CreateProfile.js uses connect to link the redux and get the dispatch function.
+    When we call dispatch with setAlert in the parameters, dispatch sends setAlert
+    to the store. In the store, thunk middleware checks if it receives a function
+    or an object. If it is an object, it sends it to the reducers. If it is a function,
+    which setAlert is (that is, setAlert returns a function), then it passes in dispatch
+    for setAlert to use.
+   */
     dispatch(
       setAlert(edit ? 'Profile Updated' : 'Profiled Created', 'success')
     );
