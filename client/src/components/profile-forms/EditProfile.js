@@ -1,26 +1,57 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { createProfile } from '../../actions/profile';
+import { createProfile, getCurrentProfile } from '../../actions/profile';
 import { Link, withRouter } from 'react-router-dom';
 
-const CreateProfile = ({ createProfile, history }) => {
-  const [formData, setFormData] = useState({
-    company: '',
-    website: '',
-    location: '',
-    status: '',
-    skills: '',
-    githubusername: '',
-    bio: '',
-    twitter: '',
-    facebook: '',
-    linkedin: '',
-    youtube: '',
-    instagram: '',
-  });
+const EditProfile = ({
+  profile: { profile, loading },
+  createProfile,
+  getCurrentProfile,
+  history,
+}) => {
+  const fields = [
+    'company',
+    'website',
+    'location',
+    'status',
+    'skills',
+    'githubusername',
+    'bio',
+    'twitter',
+    'facebook',
+    'linkedin',
+    'youtube',
+    'instagram',
+  ];
+
+  const initialState = fields.reduce((acc, field) => {
+    acc[field] = '';
+    return acc;
+  }, {});
+
+  const [formData, setFormData] = useState(initialState);
 
   const [displaySocialInputs, toggleSocialInputs] = useState(false);
+  // side effect
+  useEffect(() => {
+    getCurrentProfile();
+
+    setFormData(
+      fields.reduce((acc, field) => {
+        if (field === 'skills') {
+          acc[field] =
+            loading || !profile[field] ? '' : profile[field].join(',');
+        } else {
+          //console.log(acc);
+          //console.log(field);
+          //console.log(profile);
+          acc[field] = loading || !profile[field] ? '' : profile[field];
+        }
+        return acc;
+      }, {})
+    );
+  }, [loading, getCurrentProfile]); // when it loads (loading), then we want this to run
 
   const {
     company,
@@ -42,7 +73,7 @@ const CreateProfile = ({ createProfile, history }) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    createProfile(formData, history);
+    createProfile(formData, history, true);
   };
 
   // regarding the onClick button for adding social medias:
@@ -51,7 +82,7 @@ const CreateProfile = ({ createProfile, history }) => {
   /*Here, you do the same thing, but just defined the function directly in here.*/
   return (
     <>
-      <h1 className='large text-primary'>Create Your Profile</h1>
+      <h1 className='large text-primary'>Edit Your Profile</h1>
       <p className='lead'>
         <i className='fas fa-user'></i> Let's get some information to make your
         profile stand out
@@ -222,9 +253,17 @@ const CreateProfile = ({ createProfile, history }) => {
   );
 };
 
-CreateProfile.propTypes = {
+EditProfile.propTypes = {
   createProfile: PropTypes.func.isRequired,
+  getCurrentProfile: PropTypes.func.isRequired,
+  profile: PropTypes.object.isRequired,
 };
 
+const mapStateToProps = (state) => ({
+  profile: state.profile,
+});
+
 // wrap withRouter to use history
-export default connect(null, { createProfile })(withRouter(CreateProfile));
+export default connect(mapStateToProps, { createProfile, getCurrentProfile })(
+  withRouter(EditProfile)
+);

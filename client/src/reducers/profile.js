@@ -8,18 +8,18 @@ const initialState = {
   error: {}, //for errors
 };
 
-const profileReducer = (state = initialState, { type, paylaod }) => {
+const profileReducer = (state = initialState, { type, payload }) => {
   switch (type) {
     case GET_PROFILE:
       return {
         ...state,
-        profile: paylaod,
+        profile: payload, // WOW. THIS DEBUG TOOK ME FOREVER. I had it as paylaod instead of payload
         loading: false,
       };
     case PROFILE_ERROR:
       return {
         ...state,
-        error: paylaod,
+        error: payload,
         loading: false,
       };
     case CLEAR_PROFILE:

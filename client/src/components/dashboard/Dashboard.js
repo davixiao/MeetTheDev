@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getCurrentProfile } from '../../actions/profile';
 import Spinner from '../layout/Spinner';
+import DashboardActions from './DashboardActions';
 
 const Dashboard = ({
   getCurrentProfile,
@@ -14,6 +15,14 @@ const Dashboard = ({
   useEffect(() => {
     getCurrentProfile();
   }, [getCurrentProfile]);
+
+  if (profile === null) {
+    console.log('failed');
+  } else {
+    console.log('HELLO');
+    console.log(profile);
+  }
+
   return loading && profile === null ? (
     <Spinner />
   ) : (
@@ -23,7 +32,9 @@ const Dashboard = ({
         <i className='fas fa-user'></i> Welcome, {auth.user && auth.user.name}.
       </p>
       {profile !== null ? (
-        <>has</>
+        <>
+          <DashboardActions />
+        </>
       ) : (
         <>
           <p>You do not have your profile setup</p>
