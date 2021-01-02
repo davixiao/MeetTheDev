@@ -16,13 +16,6 @@ const Dashboard = ({
     getCurrentProfile();
   }, [getCurrentProfile]);
 
-  if (profile === null) {
-    console.log('failed');
-  } else {
-    console.log('HELLO');
-    console.log(profile);
-  }
-
   return loading && profile === null ? (
     <Spinner />
   ) : (

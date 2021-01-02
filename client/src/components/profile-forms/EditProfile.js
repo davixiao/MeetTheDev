@@ -51,8 +51,9 @@ const EditProfile = ({
         return acc;
       }, {})
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading, getCurrentProfile]); // when it loads (loading), then we want this to run
-
+  // WATCH FOR BUGS ^
   const {
     company,
     website,
