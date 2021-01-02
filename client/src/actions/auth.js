@@ -10,6 +10,7 @@ import {
   LOGOUT,
   CLEAR_PROFILE,
 } from './types';
+import { getCurrentProfile } from './profile';
 //import setAuthToken from '../utils/setAuthToken';
 
 // Load User
@@ -24,6 +25,8 @@ export const loadUser = () => async (dispatch) => {
       type: USER_LOADED,
       payload: res.data,
     });
+    // quick fix - have to grab profile whenever we reload page.
+    dispatch(getCurrentProfile());
   } catch (err) {
     dispatch({
       type: AUTH_ERROR,
