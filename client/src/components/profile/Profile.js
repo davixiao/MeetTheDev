@@ -6,6 +6,9 @@ import { getProfileById } from '../../actions/profile';
 import { Link } from 'react-router-dom';
 import ProfileTop from './ProfileTop';
 import ProfileAbout from './ProfileAbout';
+import ProfileExperience from './ProfileExperience';
+import ProfileEducation from './ProfileEducation';
+
 // we can get the id from the url link. In react, the url link id passed down in props
 const Profile = ({
   getProfileById,
@@ -16,7 +19,6 @@ const Profile = ({
   useEffect(() => {
     getProfileById(match.params.id);
   }, [getProfileById, match.params.id]);
-
   return (
     <>
       {profile === null || loading ? (
@@ -38,6 +40,30 @@ const Profile = ({
             <ProfileAbout profile={profile} />
             <div className='profile-exp bg-white p-2'>
               <h2 className='text-primary'>Experience</h2>
+              {/* I don't know why I put this here. Note to future self to put this all into ProfileExperience
+              component. Would be cleaner imo.
+              */}
+              {profile.experience.length > 0 ? (
+                <>
+                  {profile.experience.map((exp) => (
+                    <ProfileExperience key={exp._id} experience={exp} />
+                  ))}
+                </>
+              ) : (
+                <h4>This user has not put any experiences.</h4>
+              )}
+            </div>
+            <div className='profile-edu bg-white p-2'>
+              <h2 className='text-primary'>Education</h2>
+              {profile.education.length > 0 ? (
+                <>
+                  {profile.education.map((edu) => (
+                    <ProfileEducation key={edu._id} education={edu} />
+                  ))}
+                </>
+              ) : (
+                <h4>This user has not put any education.</h4>
+              )}
             </div>
           </div>
         </>

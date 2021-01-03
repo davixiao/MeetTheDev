@@ -10,13 +10,18 @@ const ProfileAbout = ({
 }) => {
   return (
     <div class='profile-about bg-light p-2'>
+      <h2 class='text-primary'>{name}'s Bio</h2>
       {bio ? (
         <>
-          <h2 class='text-primary'>{name}'s Bio</h2>
           <p>{bio}</p>
           <div class='line'></div>
         </>
-      ) : null}
+      ) : (
+        <>
+          <p>User does not have a bio.</p>
+          <div class='line'></div>
+        </>
+      )}
       {skills ? (
         <>
           <h2 class='text-primary'>Skill Set</h2>
