@@ -58,7 +58,7 @@ const EditProfile = ({
     youtube,
     instagram,
   } = formData;
-
+  console.log(bio);
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 

@@ -89,6 +89,8 @@ router.post(
             .split(', ')
             .map((skill) => skill.trim());
         }
+      } else {
+        profileFields[e] = '';
       }
     });
     profileFields.social = {};
