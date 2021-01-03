@@ -8,7 +8,7 @@ import ProfileTop from './ProfileTop';
 import ProfileAbout from './ProfileAbout';
 import ProfileExperience from './ProfileExperience';
 import ProfileEducation from './ProfileEducation';
-
+import ProfileGithub from './ProfileGithub';
 // we can get the id from the url link. In react, the url link id passed down in props
 const Profile = ({
   getProfileById,
@@ -65,6 +65,9 @@ const Profile = ({
                 <h4>This user has not put any education.</h4>
               )}
             </div>
+            {profile.githubusername ? (
+              <ProfileGithub username={profile.githubusername} />
+            ) : null}
           </div>
         </>
       )}

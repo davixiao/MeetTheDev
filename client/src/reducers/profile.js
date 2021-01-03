@@ -34,6 +34,7 @@ const profileReducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         error: payload,
+        profile: null,
         loading: false,
       };
     case CLEAR_PROFILE:
