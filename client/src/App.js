@@ -12,7 +12,7 @@ import EditProfile from './components/profile-forms/EditProfile';
 import AddExperience from './components/profile-forms/AddExperience';
 import AddEducation from './components/profile-forms/AddEducation';
 import Profiles from './components/profiles/Profiles';
-
+import Profile from './components/profile/Profile';
 // Redux
 import { Provider } from 'react-redux';
 import store from './store';
@@ -55,6 +55,7 @@ const App = () => {
             <Route exact path='/register' component={Register} />
             <Route exact path='/login' component={Login} />
             <Route exact path='/profiles' component={Profiles} />
+            <Route exact path='/profile/:id' component={Profile} />
             {/* Stops people from just typing in /dashboard in URL without being logged in */}
             <PrivateRoute exact path='/dashboard' component={Dashboard} />
             <PrivateRoute

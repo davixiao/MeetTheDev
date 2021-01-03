@@ -9,7 +9,7 @@ const Profiles = ({ getProfiles, profile: { profiles, loading } }) => {
   // we want to getProfile as soon as pagel oads
   useEffect(() => {
     getProfiles();
-  }, []);
+  }, [getProfiles]);
   return (
     <>
       {loading ? (
