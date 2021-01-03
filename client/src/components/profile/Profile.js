@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Spinner from '../layout/Spinner';
 import { getProfileById } from '../../actions/profile';
+import { Link } from 'react-router-dom';
+import ProfileTop from './ProfileTop';
 
 // we can get the id from the url link. In react, the url link id passed down in props
 const Profile = ({
@@ -13,9 +15,31 @@ const Profile = ({
 }) => {
   useEffect(() => {
     getProfileById(match.params.id);
-  }, [getProfileById]);
+  }, [getProfileById, match.params.id]);
 
-  return <div>test</div>;
+  return (
+    <>
+      {profile === null || loading ? (
+        <Spinner />
+      ) : (
+        <>
+          <Link to='/profiles' className='btn btn-light'>
+            Back to Profiles
+          </Link>
+          {auth.isAuthenticated &&
+            !auth.loading &&
+            auth.user._id === profile.user._id && (
+              <Link to='/edit-profile' className='btn btn-dark'>
+                Edit Profile
+              </Link>
+            )}
+          <div className='profile-grid my-1'>
+            <ProfileTop profile={profile} />
+          </div>
+        </>
+      )}
+    </>
+  );
 };
 
 Profile.propTypes = {

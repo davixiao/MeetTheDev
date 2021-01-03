@@ -10,26 +10,20 @@ const EditProfile = ({
   getCurrentProfile,
   history,
 }) => {
-  const fields = [
-    'company',
-    'website',
-    'location',
-    'status',
-    'skills',
-    'githubusername',
-    'bio',
-    'twitter',
-    'facebook',
-    'linkedin',
-    'youtube',
-    'instagram',
-  ];
-
-  const initialState = fields.reduce((acc, field) => {
-    acc[field] = '';
-    return acc;
-  }, {});
-
+  const initialState = {
+    company: '',
+    website: '',
+    location: '',
+    status: '',
+    skills: '',
+    githubusername: '',
+    bio: '',
+    twitter: '',
+    facebook: '',
+    linkedin: '',
+    youtube: '',
+    instagram: '',
+  };
   const [formData, setFormData] = useState(initialState);
 
   const [displaySocialInputs, toggleSocialInputs] = useState(false);
@@ -37,20 +31,16 @@ const EditProfile = ({
   useEffect(() => {
     getCurrentProfile();
 
-    setFormData(
-      fields.reduce((acc, field) => {
-        if (field === 'skills') {
-          acc[field] =
-            loading || !profile[field] ? '' : profile[field].join(',');
-        } else {
-          //console.log(acc);
-          //console.log(field);
-          //console.log(profile);
-          acc[field] = loading || !profile[field] ? '' : profile[field];
-        }
-        return acc;
-      }, {})
-    );
+    const profileData = { ...initialState };
+    for (const key in profile) {
+      if (key in profileData) profileData[key] = profile[key];
+    }
+    for (const key in profile.social) {
+      if (key in profileData) profileData[key] = profile.social[key];
+    }
+    if (Array.isArray(profileData.skills))
+      profileData.skills = profileData.skills.join(', ');
+    setFormData(profileData);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading, getCurrentProfile]); // when it loads (loading), then we want this to run
   // WATCH FOR BUGS ^
@@ -187,7 +177,7 @@ const EditProfile = ({
           </button>
           <span>Optional</span>
         </div>
-        {displaySocialInputs && (
+        {displaySocialInputs ? (
           <>
             <div className='form-group social-input'>
               <i className='fab fa-twitter fa-2x'></i>
@@ -244,7 +234,7 @@ const EditProfile = ({
               />
             </div>
           </>
-        )}
+        ) : null}
         <input type='submit' className='btn btn-primary my-1' />
         <Link className='btn btn-light my-1' to='/dashboard'>
           Go Back
