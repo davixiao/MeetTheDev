@@ -2,19 +2,7 @@ import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Navbar from './components/layout/Navbar';
 import Landing from './components/layout/Landing';
-import Register from './components/auth/Register';
-import Login from './components/auth/Login';
-import Alert from './components/layout/Alert';
-import Dashboard from './components/dashboard/Dashboard';
-import PrivateRoute from './components/routing/PrivateRoute';
-import CreateProfile from './components/profile-forms/CreateProfile';
-import EditProfile from './components/profile-forms/EditProfile';
-import AddExperience from './components/profile-forms/AddExperience';
-import AddEducation from './components/profile-forms/AddEducation';
-import Profiles from './components/profiles/Profiles';
-import Profile from './components/profile/Profile';
-import Posts from './components/posts/Posts';
-import Post from './components/post/Post';
+import Routes from './components/routing/Routes';
 // Redux
 import { Provider } from 'react-redux';
 import store from './store';
@@ -42,44 +30,10 @@ const App = () => {
     <Provider store={store}>
       <Router>
         <Navbar />
-        {/* path is URI path. So, localhost:5000/register, etc */}
-        {/* 
-    switch is op. Without it, we would only be making a single page web page.
-    It's kind of like an If statement mixed with URI stuff.
-
-    navbar stays the entire time. Using switch (like a switch statement), if it is /register,
-    then add this route to the html. 
-    */}
-        <Route exact path='/' component={Landing} />
-        <section className='container'>
-          <Alert />
-          <Switch>
-            <Route exact path='/register' component={Register} />
-            <Route exact path='/login' component={Login} />
-            <Route exact path='/profiles' component={Profiles} />
-            <Route exact path='/profile/:id' component={Profile} />
-            {/* Stops people from just typing in /dashboard in URL without being logged in */}
-            <PrivateRoute exact path='/dashboard' component={Dashboard} />
-            <PrivateRoute
-              exact
-              path='/create-profile'
-              component={CreateProfile}
-            />
-            <PrivateRoute exact path='/edit-profile' component={EditProfile} />
-            <PrivateRoute
-              exact
-              path='/add-experience'
-              component={AddExperience}
-            />
-            <PrivateRoute
-              exact
-              path='/add-education'
-              component={AddEducation}
-            />
-            <PrivateRoute exact path='/posts' component={Posts} />
-            <PrivateRoute exact path='/posts/:id' component={Post} />
-          </Switch>
-        </section>
+        <Switch>
+          <Route exact path='/' component={Landing} />
+          <Route component={Routes} />
+        </Switch>
       </Router>
     </Provider>
   );
