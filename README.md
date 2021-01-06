@@ -1,6 +1,6 @@
 # MeetTheDev
 
-Developer Social Network
+Developer Social Network - https://meet-the-dev.herokuapp.com/
 
 Built with React, Redux, Node.js, Express.js, and MongoDB Atlas
 
