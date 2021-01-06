@@ -21,7 +21,9 @@ const Profile = ({
   }, [getProfileById, match.params.id]);
   return (
     <>
-      {profile === null || loading ? (
+      {profile === null ? (
+        <div>User has not setup their profile.</div>
+      ) : loading ? (
         <Spinner />
       ) : (
         <>
