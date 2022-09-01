@@ -1,5 +1,4 @@
 # MeetTheDev
-Heroku - https://meet-the-dev.herokuapp.com/
 
 ### Introduction
 Ever wanted a place to connect with like-minded developers? MeetTheDev is a social network built for developers. 
